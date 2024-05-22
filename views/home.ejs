@@ -1,0 +1,34 @@
+<link rel="stylesheet" href="/css/home.css" />
+<body>
+  <div id="center-all">
+    <div id="image-text-container">
+      <img src="../images/1-2-chat-png-image.png" alt="chatting_logo" />
+      <p id="para-text">
+        Welcome to ChatWorld - Your Space for Instant and Engaging Dialogues!
+      </p>
+    </div>
+
+    <div class="view-form">
+      <div id="log-in-form">
+        <form action="/users/create-session">
+          <input type="email" placeholder="Enter your Email" required />
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter your Password"
+            required
+          /><br />
+          <button type="submit" id="log-in-btn">Log In</button>
+        </form>
+      </div>
+      <a href="/users/forgotten-password" id="forgotten-password"
+        >Forgotten Password</a
+      >
+      <div id="broken-line"></div>
+      <a href="/users/sign-up" id="create-account">Create Account</a>
+      <a href="/users/auth/google" id="create-account-google"
+        >Sign Up or Sign In using Google</a
+      >
+    </div>
+  </div>
+</body>
