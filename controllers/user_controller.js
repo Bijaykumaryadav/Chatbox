@@ -24,7 +24,7 @@ module.exports.create = async function (req, res) {
       email: req.body.email,
       password: req.body.password,
     });
-    await newUser.save();
+    // await newUser.save();
     return res.redirect("/");
   }
 };
