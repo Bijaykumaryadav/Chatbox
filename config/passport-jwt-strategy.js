@@ -6,11 +6,11 @@ const User = require("../models/user");
 
 let opts = {
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET,
+  secretOrKey: "chatbox",
 };
 
 passport.use(
-  new JWTStrategy(opts, async function (jwtPayload, dnoe) {
+  new JWTStrategy(opts, async function (jwtPayload, done) {
     let user = await User.findById(jwtPayload._id);
 
     try {

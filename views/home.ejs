@@ -10,8 +10,13 @@
 
     <div class="view-form">
       <div id="log-in-form">
-        <form action="/users/create-session">
-          <input type="email" placeholder="Enter your Email" required />
+        <form action="/users/create-session" method="post">
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your Email"
+            required
+          />
           <input
             type="password"
             name="password"

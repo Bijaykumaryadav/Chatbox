@@ -22,7 +22,7 @@ html {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+  max-width: 400px; /* Increased max-width for wider container */
   width: 100%;
 }
 
@@ -57,11 +57,11 @@ html {
 
 #log-in-form input {
   margin: 5px 0;
-  padding-right: 35% !important;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1em;
+  width: 100%; /* Ensures inputs take full width of the container */
 }
 
 #log-in-btn {
