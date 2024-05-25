@@ -8,6 +8,10 @@ const db = require("./config/mongoose");
 //use for session cookie
 const session = require("express-session");
 const passportJWTStrategy = require("./config/passport-jwt-strategy");
+
+// setup the authentication using google
+const googleStrategy = require("./config/passport_google_strategy");
+
 const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
@@ -20,11 +24,9 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 //Set EJS as a templating engine
 app.set("view engine", "ejs");
 app.set("views", "./views");
-
 
 //for using the static folder and for using any templete folder like this
 app.use(express.static("./assets"));
