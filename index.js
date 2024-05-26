@@ -41,6 +41,12 @@ app.use(passport.session());
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
+//setup the chat server to be used with the socket.io
+const chatServer = require('http').Server(app);
+const chatSockets = require('./config/chat_socket').chatSockets(chatServer);
+chatServer.listen(5000);
+console.log('chat server is listening on port : 5000');
+
 // Use static folder
 app.use(express.static("./assets"));
 

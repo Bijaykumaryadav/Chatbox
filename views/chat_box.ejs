@@ -1,16 +1,20 @@
-<!-- views/chat_box.ejs -->
+<!-- <link rel="stylesheet" href="/css/chat_box.css"> -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="http://127.0.0.1:5000/socket.io/socket.io.js"></script>
+<script src="/js/chat_engine.js"></script>
+
 <body>
-  <div id="container">
-    <div class="send-message-container">
-      <form action="#" id="send-container">
-        <input
-          type="text"
-          name="messageInp"
-          id="messageInp"
-          placeholder="Type a message"
-        />
-        <button class="btn" type="submit" id="send-message-btn">Send</button>
-      </form>
+    <div id="container">
     </div>
-  </div>
+    <div class="send-message-container">
+    <form action="#" id="send-container">
+        <input type="text" name="messageInp" id="messageInp" placeholder="Type a message">
+        <button class="btn" type="submit" id="send-message-btn">Send</button>
+    </form>
+    </div>
+
+
+<script>
+    new ChatEngine('container','<%=locals.user.name%>');
+</script>
 </body>
