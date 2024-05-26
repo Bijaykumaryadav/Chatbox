@@ -29,7 +29,6 @@ module.exports.create = async function (req, res) {
       password: req.body.password,
       token: crypto.randomBytes(16).toString("hex"),
     });
-    // await user.save();
     return res.redirect("/");
   }
 };
@@ -64,17 +63,10 @@ module.exports.createSession = async (req, res) => {
     const jwtToken = jwt.sign(user.toJSON(), "chatbox", {
       expiresIn: "30d",
     });
-    
-    // Log user details to the console
-    console.log({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      jwtToken,
-    });
-    // Render the chat_box view after successful login
-    return res.render("chat_box", {
-      title: "Chat",
+
+    return res.status(200).send({
+      success: true,
+      message: "Logged In successful",
       user: {
         _id: user._id,
         name: user.name,
@@ -91,6 +83,34 @@ module.exports.createSession = async (req, res) => {
     });
   }
 };
+
+module.exports.createGoogleSession = async (req, res) => {
+  try {
+    const user = req.user;
+    const jwtToken = jwt.sign(user.toJSON(), "chatbox", {
+      expiresIn: "30d",
+    });
+
+    // Render the profile page after successful login using Google
+    return res.render("chat_box", {
+      title: "Chat",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        jwtToken,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).render("error_page", {
+      title: "Error",
+      message: "Error in logging In using Google",
+      error,
+    });
+  }
+};
+
 
 module.exports.forgottenPassword = function (req, res) {
   return res.render("reset_password", {
