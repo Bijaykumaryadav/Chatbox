@@ -8,10 +8,14 @@ const userController = require("../controllers/user_controller");
 router.get("/sign-up", userController.SignUp);
 router.post("/create", userController.create);
 router.get("/profile", userController.userProfile);
+// router.get("/create-session", userController.createSession);
 router.post("/create-session", userController.createSession);
 router.get("/forgotten-password", userController.forgottenPassword);
 
-router.get("/auth/google", passport.authenticate("google", { scope: ["email", "profile"] }));
+router.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
