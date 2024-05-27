@@ -1,6 +1,6 @@
 class ChatEngine {
-  constructer(chatBoxId, userName) {
-    this.chatBox = $(`#{chatBoxId}`);
+  constructor(chatBoxId, userName) {
+    this.chatBox = $(`#${chatBoxId}`);
     this.userName = userName;
     this.socket = io.connect("http://127.0.0.1:5000");
 
@@ -10,21 +10,22 @@ class ChatEngine {
   }
 
   appendFunction = (message, data) => {
-    let position;
-    position = data.user_name === this.userName ? "right" : "left";
-    let messageContainer = $('<div class="message">');
-    messageContainer.addClass(position);
+    let position = data.user_name === this.userName ? "right" : "left";
+    let messageContainer = $('<div class="message">').addClass(position);
 
-    //Create a span element for the message content
+    // Create a span element for the message content
     let messageContentElement = $('<span class="message-content">');
     messageContentElement.text(message);
 
-    //Append the username and message content to the message container
-    messageContainer.append(usernameElement, messageContentElement);
+    // Append the message content to the message container
+    messageContainer.append(messageContentElement);
 
+    // Append the message container to the chat box
     this.chatBox.append(messageContainer);
-    let audioElement = new Audio("../audio/ting.mp3");
+
+    // Play sound for received messages
     if (position === "left") {
+      let audioElement = new Audio("../audio/ting.mp3");
       audioElement.play();
     }
   };
@@ -63,12 +64,10 @@ class ChatEngine {
     });
 
     self.socket.on("leave", function (data) {
-      console.log("left chat");
       self.appendFunction(`${data.user_name} left the chat`, data);
     });
 
     self.socket.on("disconnect", function () {
-      console.log("disconnected from the server");
       self.appendFunction(`${self.userName} left the chat`);
     });
   }

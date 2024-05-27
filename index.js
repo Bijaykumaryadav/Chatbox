@@ -1,11 +1,15 @@
 const express = require("express");
 const app = express();
 const port = 8000;
+const layouts = require("express-ejs-layouts");
 const passport = require("passport");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const dotenv = require("dotenv");
 const MongoStore = require("connect-mongo");
+const flash = require("connect-flash");
+const customMware = require("./config/middleware");
 
 // Load environment variables
 dotenv.config();
@@ -37,18 +41,26 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Flash middleware
+app.use(flash());
+
+// Custom middleware for setting flash messages
+app.use(customMware.setFlash);
+
 // Set EJS as templating engine
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
-//setup the chat server to be used with the socket.io
-const chatServer = require('http').Server(app);
-const chatSockets = require('./config/chat_socket').chatSockets(chatServer);
+// Setup the chat server to be used with socket.io
+const chatServer = require("http").Server(app);
+const chatSockets = require("./config/chat_socket").chatSockets(chatServer);
 chatServer.listen(5000);
-console.log('chat server is listening on port : 5000');
+console.log("Chat server is listening on port: 5000");
 
 // Use static folder
 app.use(express.static("./assets"));
+app.set("layout extractStyles", true);
+app.set("layout extractScripts", true);
 
 // Use routes
 app.use("/", require("./routes"));

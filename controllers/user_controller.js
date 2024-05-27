@@ -1,3 +1,4 @@
+// config/user_controller.js
 const User = require("../models/user");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
@@ -37,52 +38,41 @@ module.exports.createSession = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).send({
-        success: false,
-        message: "Invalid Email or password",
-      });
+      req.flash("error", "Invalid Email or password");
+      return res.redirect("/");
     }
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(402).send({
-        success: false,
-        message: "Invalid Email",
-      });
+      req.flash("error", "Invalid Email");
+      return res.redirect("/");
     }
 
     const matchPassword = await bcrypt.compare(password, user.password);
-
     if (!matchPassword) {
-      return res.status(401).send({
-        success: false,
-        message: "Invalid Password",
-      });
+      req.flash("error", "Invalid Password");
+      return res.redirect("/");
     }
 
-    const jwtToken = jwt.sign(user.toJSON(), "chatbox", {
-      expiresIn: "30d",
-    });
+    const jwtToken = jwt.sign(user.toJSON(), "chatbox", { expiresIn: "30d" });
 
-    return res.status(200).send({
-      success: true,
-      message: "Logged In successful",
+    req.flash("success", "Logged in successfully");
+    return res.render("chat_box", {
+      title: "Chat",
       user: {
         _id: user._id,
         name: user.name,
-        email,
+        email: user.email,
         jwtToken,
       },
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send({
-      success: false,
-      message: "Error in logging In",
-      error,
-    });
+    req.flash("error", "Error in logging In");
+    return res.redirect("/");
   }
 };
+
 
 module.exports.createGoogleSession = async (req, res) => {
   try {
@@ -110,7 +100,6 @@ module.exports.createGoogleSession = async (req, res) => {
     });
   }
 };
-
 
 module.exports.forgottenPassword = function (req, res) {
   return res.render("reset_password", {

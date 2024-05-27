@@ -1,21 +1,26 @@
-module.exports.chatSockets = function(socketServer){
-    let io = require('socket.io')(socketServer,{cors:{origin: '*'}});
+module.exports.chatSockets = function (socketServer) {
+  let io = require("socket.io")(socketServer);
 
-    io.sockets.on('connection',function(socket){
-        console.log('socket connected!');
+  io.sockets.on("connection", function (socket) {
+    console.log("new connection received", socket.id);
 
-        socket.on('new-user-joined',data => {
-            socket.join(data.chatRoom);
-            socket.broadcast.to(data.chatRoom).emit('user_joined',data);
-            socket.userName = data.user_name;
-        });
-
-        socket.on('send_message',function(data){
-            io.to(data.chatRoom).emit('receive_message',data);
-        });
-
-        socket.on('disconnect',function(){
-            socket.broadcast.emit('leave',{user_name: socket.userName});
-        });
+    socket.on("disconnect", function () {
+      console.log("socket disconnected!");
     });
+
+    socket.on("new-user-joined", function (data) {
+      console.log("joining request received", data);
+      socket.join(data.chatRoom);
+      io.in(data.chatRoom).emit("user_joined", data);
+    });
+
+    socket.on("send_message", function (data) {
+      io.in(data.chatRoom).emit("receive_message", data);
+    });
+
+    socket.on("leave", function (data) {
+      socket.leave(data.chatRoom);
+      io.in(data.chatRoom).emit("leave", data);
+    });
+  });
 };
